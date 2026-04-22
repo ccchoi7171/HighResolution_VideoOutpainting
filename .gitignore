@@ -30,3 +30,9 @@ tmp/
 *.jpeg
 
 node_modules/
+
+.omx/
+*.log
+FYC_panda70m_outputs/
+FollowYourCanvas/
+Panda-70M/
