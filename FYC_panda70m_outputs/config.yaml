@@ -1,0 +1,106 @@
+name: panda70m-10samples-640x896-40step
+pretrained_model_path: pretrained_models/stable-diffusion-2-1
+validation_data:
+  num_inference_steps: 40
+  guidance_scale_text: 8.0
+  guidance_scale_adapter: -1
+  multi_diff: true
+motion_pretrained_model_path: pretrained_models/follow-your-canvas/checkpoint-40000.ckpt
+unet_additional_kwargs:
+  use_motion_module: true
+  motion_module_resolutions:
+  - 1
+  - 2
+  - 4
+  - 8
+  unet_use_cross_frame_attention: false
+  unet_use_temporal_attention: false
+  use_linear_projection: true
+  use_inflated_groupnorm: true
+  motion_module_mid_block: true
+  use_fps_condition: true
+  use_temporal_conv: false
+  use_relative_postions: WithAdapter
+  use_ip_plus_cross_attention: true
+  ip_plus_condition: video
+  num_tokens: 64
+  use_adapter_temporal_projection: true
+  compress_video_features: true
+  image_hidden_size: 256
+  use_outpaint: true
+  motion_module_type: Vanilla
+  motion_module_kwargs:
+    num_attention_heads: 8
+    num_transformer_block: 1
+    attention_block_types:
+    - Temporal_Self
+    - Temporal_Self
+    temporal_position_encoding: true
+    temporal_position_encoding_max_len: 64
+    temporal_attention_dim_div: 1
+    zero_initialize: true
+noise_scheduler_kwargs:
+  num_train_timesteps: 1000
+  beta_start: 0.00085
+  beta_end: 0.012
+  beta_schedule: linear
+  steps_offset: 1
+  clip_sample: false
+  prediction_type: v_prediction
+  rescale_betas_zero_snr: true
+enable_xformers_memory_efficient_attention: true
+global_seed: 0
+use_ip_plus_cross_attention: true
+image_pretrained_model_path: pretrained_models/sam/sam_vit_b_01ec64.pth
+use_fps_condition: true
+use_outpaint: true
+anchor_target_sampling:
+  target_size:
+  - 512
+  - 512
+ip_plus_condition: video
+image_encoder_name: SAM
+target_size:
+- 640
+- 896
+min_overlap:
+- 128
+- 128
+lmm_path: pretrained_models/Qwen-VL-Chat
+start_index: 0
+validate_overlap: null
+video_dir: /data/AI-Graphics/Applications/HR-Voutpainting/Panda-70M/fyc_selected_10
+prompts_input:
+- A 3d rendering of a zoo with animals and a train.
+- It is a rally car driving on a dirt road in the countryside, with people watching
+  from the side of the road.
+- The luxury yacht is sailing on calm waters with a beautiful sunset in the background.
+- A person is holding a long haired dachshund in their arms.
+- A person is kneading dough and putting jam on it.
+- There is a beach with waves and rocks in the foreground, and a city skyline in the
+  background.
+- A rocket launches into space on the launch pad.
+- A little boy is playing with a basketball in the city.
+- A rhino and a lion are fighting in the dirt.
+- A person in blue gloves is connecting an electrical supply to an injector.
+negative_prompt_input:
+- noisy, ugly, nude, watermark
+- noisy, ugly, nude, watermark
+- noisy, ugly, nude, watermark
+- noisy, ugly, nude, watermark
+- noisy, ugly, nude, watermark
+- noisy, ugly, nude, watermark
+- noisy, ugly, nude, watermark
+- noisy, ugly, nude, watermark
+- noisy, ugly, nude, watermark
+- noisy, ugly, nude, watermark
+append_timestamp_to_output_dir: false
+save_samples_output: true
+save_original_output: true
+save_replace_output: false
+save_smooth_output: false
+save_result_output: false
+device: cuda
+seed: 0
+output_dir: /data/AI-Graphics/Applications/HR-Voutpainting/FYC_panda70m_outputs
+simple_output_names: true

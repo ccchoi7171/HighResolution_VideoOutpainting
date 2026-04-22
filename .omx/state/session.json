@@ -1,0 +1,9 @@
+{
+  "session_id": "omx-1776863044182-uh0552",
+  "started_at": "2026-04-22T13:04:04.315Z",
+  "cwd": "/data/AI-Graphics/Applications/HR-Voutpainting",
+  "pid": 3985737,
+  "platform": "linux",
+  "pid_start_ticks": 702018400,
+  "pid_cmdline": "node /home/changsuchoi/.npm-global/bin/omx --xhigh --madmax"
+}
