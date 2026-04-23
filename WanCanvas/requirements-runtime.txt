@@ -1,0 +1,11 @@
+# Optional runtime requirements for real Wan bring-up.
+# Not required for the architecture-only scaffold/unit tests.
+git+https://github.com/huggingface/diffusers
+transformers
+accelerate
+safetensors
+sentencepiece
+einops
+peft
+imageio
+av

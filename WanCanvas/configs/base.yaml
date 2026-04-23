@@ -1,0 +1,29 @@
+runtime:
+  conda_env: wancanvas
+  diffusers_install: source
+  allow_stable_fallback: true
+model:
+  base_model_id: Wan-AI/Wan2.2-TI2V-5B-Diffusers
+  base_pipeline_class: WanPipeline
+  vace_reference_model_id: Wan-AI/Wan2.1-VACE-14B-diffusers
+  vace_pipeline_class: WanVACEPipeline
+  strict_dense_mvp: true
+conditions:
+  layout_token_dim: 1024
+  layout_token_count: 8
+  geometry_token_dim: 1024
+  geometry_token_count: 4
+  geometry_version: v1
+  use_mask_summary: true
+window:
+  tile_height: 720
+  tile_width: 720
+  overlap_height: 180
+  overlap_width: 180
+  rounds: 1
+known_region:
+  mode: overwrite
+  blend_schedule:
+    kind: cosine
+train:
+  dry_run_only: true

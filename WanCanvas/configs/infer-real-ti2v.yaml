@@ -1,0 +1,19 @@
+inference:
+  mode: t2v
+  model_id: Wan-AI/Wan2.2-TI2V-5B-Diffusers
+  pipeline_class: WanPipeline
+  source_image: FollowYourCanvas/infer/temp.jpg
+  output_root: WanCanvas/outputs
+  cache_dir: WanCanvas/.hf-cache
+  height: 704
+  width: 1280
+  num_frames: 49
+  num_inference_steps: 20
+  guidance_scale: 5.0
+  fps: 16
+  seed: 7
+  scheduler_name: FlowMatchEulerDiscreteScheduler
+notes:
+  - Official TI2V-5B diffusers export resolves to WanPipeline in model_index.json.
+  - The verified runtime path therefore uses text-to-video generation while still saving original/reference assets.
+  - Verified workaround: FlowMatchEulerDiscreteScheduler is used for runnable multi-step inference because UniPC hits a CPU/CUDA device mismatch on the current diffusers main build in `wancanvas`.
