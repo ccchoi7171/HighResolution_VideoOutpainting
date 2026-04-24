@@ -1,0 +1,15 @@
+prompt: "expand the frame"
+source_video: "path/to/source.mp4"
+output_root: "runs/wancanvas"
+runtime_variant: "smoke"
+canvas_height: 704
+canvas_width: 1280
+num_frames: 17
+num_inference_steps: 2
+guidance_scale: 3.0
+fps: 16
+tile_height: 704
+tile_width: 720
+overlap_height: 0
+overlap_width: 0
+rounds: 1

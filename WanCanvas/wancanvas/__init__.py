@@ -9,7 +9,8 @@ from .config_schema import (
     WanCanvasConfig,
     WindowConfig,
 )
-from .inference import Ti2VInferenceConfig, Ti2VRunArtifacts, run_ti2v_inference
+from .inference import OutpaintInferenceConfig, OutpaintRunArtifacts, run_outpaint_inference
+from .train import SmokeTrainConfig, SmokeTrainReport, SmokeTrainer
 
 __all__ = [
     "ConditionConfig",
@@ -19,7 +20,10 @@ __all__ = [
     "TrainSkeletonConfig",
     "WanCanvasConfig",
     "WindowConfig",
-    "Ti2VInferenceConfig",
-    "Ti2VRunArtifacts",
-    "run_ti2v_inference",
+    "OutpaintInferenceConfig",
+    "OutpaintRunArtifacts",
+    "run_outpaint_inference",
+    "SmokeTrainConfig",
+    "SmokeTrainReport",
+    "SmokeTrainer",
 ]

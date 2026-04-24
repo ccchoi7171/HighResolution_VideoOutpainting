@@ -81,7 +81,7 @@ class CanvasExpansionContractTest(unittest.TestCase):
         self.assertTrue(report['wrapper']['has_known_region_state'])
         self.assertTrue(all(report['wrapper']['request_contract']['checks'].values()))
         self.assertEqual(report['wrapper']['request_contract']['shapes']['prompt_embeds'], [1, 1, 1024])
-        self.assertEqual(report['wrapper']['condition_bundle']['concat_shape'], [1, 1, 1024])
+        self.assertEqual(report['wrapper']['condition_bundle']['concat_shape'], None)
 
 
 if __name__ == '__main__':

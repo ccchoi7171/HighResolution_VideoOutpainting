@@ -11,3 +11,11 @@ def estimate_latent_hw(height: int, width: int, *, vae_scale_factor_spatial: int
     if height <= 0 or width <= 0:
         raise ValueError("height and width must be positive")
     return height // vae_scale_factor_spatial, width // vae_scale_factor_spatial
+
+
+def estimate_latent_frames(frame_count: int, *, vae_scale_factor_temporal: int = 4) -> int:
+    if frame_count <= 0:
+        raise ValueError("frame_count must be positive")
+    if vae_scale_factor_temporal <= 0:
+        raise ValueError("vae_scale_factor_temporal must be positive")
+    return ((frame_count - 1) // vae_scale_factor_temporal) + 1

@@ -1,12 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from typing import Any
-
-try:
-    import torch
-except ImportError:  # pragma: no cover
-    torch = None
 
 from .condition_adapter import ConditionAdapter, ConditionBundle
 from .geometry_encoder import GeometryEncoderConfig, GeometryEncoderOutput, SimpleGeometryEncoder
@@ -46,11 +41,9 @@ class FYCConditioningOutput:
 class FYCConditioningBuilder:
     """Compose FYC-side conditions into a DiT-facing token bundle.
 
-    This is the explicit proof surface for the architecture claim that:
-    - LE (layout encoder) produces anchor/layout tokens
-    - RRE (relative region embedding) produces geometry tokens from the 6-field FYC relation
-    - known-region state can be summarized into mask tokens
-    - all three become an ordered conditioning bundle consumable by the Wan-side wrapper
+    The active path keeps FYC's layout / geometry / known-region summaries as
+    explicit token streams and maps them into Wan's real
+    `encoder_hidden_states_image` path at execution time.
     """
 
     def __init__(
@@ -115,6 +108,7 @@ class FYCConditioningBuilder:
             "geometry_aux": dict(geometry_output.aux),
             "mask_aux": dict(mask_output.aux) if mask_output is not None else None,
             "preserves_fyc_v1_rre": True,
+            "consumption_path": "encoder_hidden_states_image",
         }
         return FYCConditioningOutput(
             bundle=bundle,

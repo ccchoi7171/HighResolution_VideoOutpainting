@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import unittest
 
+from wancanvas.backbones.wan_loader import WanLoader
 from wancanvas.models.fyc_conditioning import FYCConditioningBuilder, FYCConditioningConfig
-from wancanvas.models.layout_encoder import LayoutEncoderConfig
 from wancanvas.models.geometry_encoder import GeometryEncoderConfig
+from wancanvas.models.layout_encoder import LayoutEncoderConfig
 from wancanvas.models.mask_summary import MaskSummaryConfig
 from wancanvas.models.wan_outpaint_wrapper import WanForwardRequest, WanOutpaintWrapper
-from wancanvas.backbones.wan_loader import WanLoader
 
 try:
     import torch
@@ -26,16 +26,11 @@ class FYCConditioningBuilderTest(unittest.TestCase):
                 include_mask_summary=True,
             )
         )
-        anchor_video = torch.randn(2, 5, 3, 16, 16)
-        relative_position = torch.randn(2, 6)
-        known_mask = torch.randint(0, 2, (2, 5, 1, 16, 16)).float()
-        prompt_embeds = torch.randn(2, 4, 32)
-
         output = builder.encode(
-            anchor_video=anchor_video,
-            relative_position=relative_position,
-            known_mask=known_mask,
-            prompt_embeds=prompt_embeds,
+            anchor_video=torch.randn(2, 5, 3, 16, 16),
+            relative_position=torch.randn(2, 6),
+            known_mask=torch.randint(0, 2, (2, 5, 1, 16, 16)).float(),
+            prompt_embeds=torch.randn(2, 4, 32),
         )
 
         self.assertEqual(output.bundle.order, ['text', 'layout', 'geometry', 'mask'])
@@ -46,7 +41,7 @@ class FYCConditioningBuilderTest(unittest.TestCase):
         self.assertEqual(tuple(output.concatenated_tokens.shape), (2, 10, 32))
         self.assertTrue(output.metadata['preserves_fyc_v1_rre'])
 
-    def test_wrapper_reports_condition_shapes_and_semantics(self) -> None:
+    def test_wrapper_prepares_fyc_tokens_for_image_conditioning_stream(self) -> None:
         builder = FYCConditioningBuilder(
             FYCConditioningConfig(
                 layout=LayoutEncoderConfig(hidden_dim=8, token_dim=16, token_count=2),
@@ -59,14 +54,14 @@ class FYCConditioningBuilderTest(unittest.TestCase):
             anchor_video=torch.randn(1, 4, 3, 8, 8),
             relative_position=torch.randn(1, 6),
             known_mask=torch.randint(0, 2, (1, 4, 1, 8, 8)).float(),
-            prompt_embeds=torch.randn(1, 3, 16),
+            prompt_embeds=None,
         )
         wrapper = WanOutpaintWrapper(WanLoader())
         prepared = wrapper.prepare_inputs(
             WanForwardRequest(
-                noisy_latents=torch.zeros(1, 4, 16, 8, 8),
+                prompt='expand the frame',
+                noisy_latents=torch.zeros(1, 16, 4, 8, 8),
                 timesteps=torch.tensor([999], dtype=torch.int64),
-                prompt_embeds=torch.randn(1, 3, 16),
                 layout_tokens=output.layout.tokens,
                 geometry_tokens=output.geometry.tokens,
                 mask_tokens=output.mask.tokens,
@@ -74,12 +69,13 @@ class FYCConditioningBuilderTest(unittest.TestCase):
             )
         )
         bundle = prepared['condition_bundle']
-        self.assertEqual(bundle['semantic_roles'], ['text', 'layout_encoder', 'relative_region_embedding', 'known_region_mask_summary'])
+        self.assertEqual(bundle['semantic_roles'], ['layout_encoder', 'relative_region_embedding', 'known_region_mask_summary'])
         self.assertEqual(bundle['token_shapes']['layout'], [1, 2, 16])
         self.assertEqual(bundle['token_shapes']['geometry'], [1, 2, 16])
         self.assertEqual(bundle['token_shapes']['mask'], [1, 1, 16])
-        self.assertEqual(bundle['concat_shape'], [1, 8, 16])
-        self.assertTrue(prepared['has_known_region_state'])
+        self.assertEqual(bundle['concat_shape'], [1, 5, 16])
+        self.assertEqual(bundle['consumption_path'], 'encoder_hidden_states_image')
+        self.assertTrue(prepared['conditioning_path']['image_conditioning_stream'])
         self.assertTrue(all(prepared['request_contract']['checks'].values()))
 
 

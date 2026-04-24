@@ -1,0 +1,22 @@
+prompt: "cinematic snowy forest panorama"
+source_video: "path/to/source.mp4"
+output_root: "runs/wancanvas"
+model_id: "Wan-AI/Wan2.2-TI2V-5B-Diffusers"
+pipeline_class: "WanImageToVideoPipeline"
+cache_dir: ".cache/wancanvas"
+device: "cuda"
+torch_dtype: "bfloat16"
+runtime_variant: "pretrained"
+canvas_height: 704
+canvas_width: 1280
+num_frames: 49
+num_inference_steps: 20
+guidance_scale: 5.0
+fps: 16
+flow_shift: 5.0
+scheduler_name: "FlowMatchEulerDiscreteScheduler"
+tile_height: 720
+tile_width: 720
+overlap_height: 176
+overlap_width: 176
+rounds: 2

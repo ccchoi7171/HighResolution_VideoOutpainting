@@ -14,7 +14,7 @@ from ..pipelines.overlap_merge import gaussian_weights_2d
 from ..pipelines.size_alignment import SizeAlignmentRule, snap_spatial_size, validate_spatial_size
 from ..pipelines.window_scheduler import WindowScheduler
 from ..models.wan_outpaint_wrapper import WanForwardRequest, WanOutpaintWrapper
-from ..utils.latent_ops import estimate_latent_hw
+from ..utils.latent_ops import estimate_latent_frames, estimate_latent_hw
 
 
 @dataclass(slots=True)
@@ -67,8 +67,9 @@ class WanOutpaintPipeline:
         if torch is None:
             return 'latent-dry-run', 'scheduler-dry-run', 'text-dry-run'
         latent_hw = estimate_latent_hw(target_height, target_width)
+        latent_frames = estimate_latent_frames(frame_count)
         return (
-            torch.zeros((1, frame_count, 16, latent_hw[0], latent_hw[1]), dtype=torch.float32),
+            torch.zeros((1, 48, latent_frames, latent_hw[0], latent_hw[1]), dtype=torch.float32),
             torch.tensor([999], dtype=torch.int64),
             torch.zeros((1, 1, 1024), dtype=torch.float32),
         )

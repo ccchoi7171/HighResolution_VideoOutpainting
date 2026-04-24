@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 
-_REQUIRED_WAN_CLASSES = ("WanPipeline", "WanVACEPipeline", "WanTransformer3DModel")
+_REQUIRED_WAN_CLASSES = ("WanImageToVideoPipeline", "WanVACEPipeline", "WanTransformer3DModel")
 
 
 @dataclass(slots=True)

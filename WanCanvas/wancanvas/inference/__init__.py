@@ -1,8 +1,13 @@
-from .ti2v_runner import DEFAULT_NEGATIVE_PROMPT, Ti2VInferenceConfig, Ti2VRunArtifacts, run_ti2v_inference
+from .outpaint_runner import (
+    DEFAULT_NEGATIVE_PROMPT,
+    OutpaintInferenceConfig,
+    OutpaintRunArtifacts,
+    run_outpaint_inference,
+)
 
 __all__ = [
     'DEFAULT_NEGATIVE_PROMPT',
-    'Ti2VInferenceConfig',
-    'Ti2VRunArtifacts',
-    'run_ti2v_inference',
+    'OutpaintInferenceConfig',
+    'OutpaintRunArtifacts',
+    'run_outpaint_inference',
 ]

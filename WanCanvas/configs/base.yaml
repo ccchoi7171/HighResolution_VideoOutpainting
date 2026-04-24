@@ -4,7 +4,7 @@ runtime:
   allow_stable_fallback: true
 model:
   base_model_id: Wan-AI/Wan2.2-TI2V-5B-Diffusers
-  base_pipeline_class: WanPipeline
+  base_pipeline_class: WanImageToVideoPipeline
   vace_reference_model_id: Wan-AI/Wan2.1-VACE-14B-diffusers
   vace_pipeline_class: WanVACEPipeline
   strict_dense_mvp: true
@@ -20,10 +20,10 @@ window:
   tile_width: 720
   overlap_height: 180
   overlap_width: 180
-  rounds: 1
+  rounds: 2
 known_region:
   mode: overwrite
   blend_schedule:
     kind: cosine
 train:
-  dry_run_only: true
+  dry_run_only: false

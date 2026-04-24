@@ -14,26 +14,27 @@ except ImportError:  # pragma: no cover
 
 @unittest.skipIf(torch is None, 'torch not installed')
 class FYCSampleToWanBridgeTest(unittest.TestCase):
-    def test_crop_reference_sample_bridges_to_wrapper_payload(self) -> None:
+    def test_crop_reference_sample_bridges_to_real_forward_request_surface(self) -> None:
         dataset = WanCanvasDataset(
             records=[DatasetRecord(source_id='sample', prompt='expand snowy forest', frame_height=720, frame_width=1280, frame_count=8)],
             sampling_config=AnchorTargetSamplingConfig(target_size=(512, 512), anchor_size=(384, 384), seed=5),
         )
         sample = dataset[0]
         self.assertIsInstance(sample.anchor_video, CropReference)
-        bridge = FYCSampleToWanBridge()
-        output = bridge.build(sample)
+        output = FYCSampleToWanBridge().build(sample)
         bundle = output.wrapper_payload['condition_bundle']
-        self.assertEqual(bundle['order'], ['text', 'layout', 'geometry', 'mask'])
-        self.assertEqual(bundle['semantic_roles'], ['text', 'layout_encoder', 'relative_region_embedding', 'known_region_mask_summary'])
+        self.assertEqual(bundle['order'], ['layout', 'geometry', 'mask'])
+        self.assertEqual(bundle['semantic_roles'], ['layout_encoder', 'relative_region_embedding', 'known_region_mask_summary'])
         self.assertEqual(bundle['token_shapes']['layout'], [1, 8, 1024])
         self.assertEqual(bundle['token_shapes']['geometry'], [1, 4, 1024])
         self.assertEqual(bundle['token_shapes']['mask'], [1, 1, 1024])
-        self.assertEqual(bundle['concat_shape'], [1, 29, 1024])
-        self.assertEqual(output.to_dict()['request']['noisy_latents_shape'], [1, 8, 16, 64, 64])
+        self.assertEqual(bundle['concat_shape'], [1, 13, 1024])
+        self.assertEqual(output.to_dict()['request']['noisy_latents_shape'], [1, 16, 2, 64, 64])
         self.assertEqual(output.to_dict()['request']['timesteps_shape'], [1])
         self.assertTrue(all(output.wrapper_payload['request_contract']['checks'].values()))
         self.assertEqual(output.metadata['anchor_meta']['anchor_source'], 'crop-reference-synthetic')
+        self.assertIsNone(output.request.prompt_embeds)
+        self.assertEqual(output.request.prompt, sample.prompt)
         self.assertTrue(output.request.known_region_state['anchor_region'] is not None)
 
     def test_real_tensor_anchor_is_preserved(self) -> None:
@@ -52,8 +53,7 @@ class FYCSampleToWanBridgeTest(unittest.TestCase):
             cropper=cropper,
         )
         sample = dataset[0]
-        bridge = FYCSampleToWanBridge()
-        output = bridge.build(sample)
+        output = FYCSampleToWanBridge().build(sample)
         self.assertEqual(output.metadata['anchor_meta']['anchor_source'], 'tensor-frames')
         self.assertEqual(output.wrapper_payload['condition_bundle']['token_shapes']['layout'][0], 1)
         self.assertTrue(all(output.wrapper_payload['request_contract']['checks'].values()))

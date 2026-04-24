@@ -1,0 +1,13 @@
+video_path: "path/to/source.mp4"
+prompt: "expand the frame"
+frame_height: 720
+frame_width: 1280
+frame_count: 17
+fps: 16
+target_height: 512
+target_width: 512
+anchor_height: 384
+anchor_width: 384
+runtime_variant: "smoke"
+device: "cpu"
+torch_dtype: "float32"

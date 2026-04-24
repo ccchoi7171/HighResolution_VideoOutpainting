@@ -19,7 +19,7 @@ class RuntimeConfig:
 @dataclass(slots=True)
 class ModelConfig:
     base_model_id: str = "Wan-AI/Wan2.2-TI2V-5B-Diffusers"
-    base_pipeline_class: str = "WanPipeline"
+    base_pipeline_class: str = "WanImageToVideoPipeline"
     vace_reference_model_id: str = "Wan-AI/Wan2.1-VACE-14B-diffusers"
     vace_pipeline_class: str = "WanVACEPipeline"
     strict_dense_mvp: bool = True
