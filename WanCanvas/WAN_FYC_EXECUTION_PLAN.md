@@ -31,7 +31,7 @@
 3. inference가 prompt-only TI2V가 아니라 anchor/mask/plan 기반 outpainting을 수행한다.
 4. training smoke pass에서 `forward + backward + optimizer.step()`가 돈다.
 5. high-resolution outpainting 전략(멀티라운드 + tile refine + merge)이 명시되고 동작한다.
-6. 쓸모없어진 dry-run/TI2V-only 코드는 `WanCanvas_Trash`로 이동된다.
+6. 쓸모없어진 dry-run/TI2V-only 코드는 최종 검증 후 repo에서 제거된다.
 
 ---
 
@@ -39,7 +39,7 @@
 - 기존의 좋은 자산은 최대한 재사용한다.
 - **bridge-only 구조를 확장**하는 게 아니라, **real Wan execution path**로 바꾼다.
 - 새 구조가 통과하기 전에는 기존 파일을 버리지 않는다.
-- **replace first, archive later** 규칙을 지킨다.
+- **replace first, remove later** 규칙을 지킨다.
 
 ---
 
@@ -121,7 +121,7 @@
 
 ---
 
-### 6. 폴더 정리 및 Trash 이동
+### 6. 폴더 정리 및 obsolete 제거
 ## Active tree에 남길 것
 - `wancanvas/data/*`
 - `wancanvas/pipelines/*`
@@ -133,7 +133,7 @@
 - `wancanvas/models/fyc_sample_bridge.py`
 - `wancanvas/models/fyc_conditioning.py`
 
-## 대체 후 `WanCanvas_Trash` 이동 후보
+## 대체 후 제거 후보
 - `wancanvas/train/contracts.py`
 - `wancanvas/train/dry_run.py`
 - `scripts/train_wancanvas.py`
@@ -145,8 +145,8 @@
 - `tests/test_ti2v_runner.py`
 
 규칙:
-- **새 경로가 통과한 뒤 이동**
-- active code에서 import가 남아 있으면 이동 금지
+- **새 경로가 통과한 뒤 제거**
+- active code에서 import가 남아 있으면 제거 금지
 
 ---
 
@@ -166,7 +166,7 @@
 4. real outpainting inference 구현
 5. real training smoke 구현
 6. high-resolution pass 추가
-7. obsolete 코드 Trash 이동
+7. obsolete 코드 제거
 8. 최종 검증 및 README 정리
 
 ---

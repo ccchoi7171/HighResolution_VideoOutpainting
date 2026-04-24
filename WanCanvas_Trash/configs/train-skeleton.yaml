@@ -1,8 +1,0 @@
-train:
-  dry_run_only: true
-  trainable_modules:
-    - layout_encoder
-    - geometry_encoder
-    - condition_adapter
-    - wan_outpaint_wrapper
-  run_full_training: false

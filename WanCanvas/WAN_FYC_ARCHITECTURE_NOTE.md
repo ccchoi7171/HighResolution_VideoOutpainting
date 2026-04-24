@@ -35,9 +35,10 @@ latent_model_input = (1 - latent_mask) * condition_latents + latent_mask * noisy
 - gaussian overlap merge
 - write final outpainted video
 
-## Trash matrix
+## Replacement / removal matrix
 
-The following files were replaced and moved to `../WanCanvas_Trash/`:
+The following files were replaced and then removed from the repo so the
+active tree only reflects the current WanCanvas execution surface:
 
 | Old path | Replacement |
 | --- | --- |

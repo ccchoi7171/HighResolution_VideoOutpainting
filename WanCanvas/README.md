@@ -7,7 +7,7 @@ WanCanvas is the cleaned execution surface for adapting **Follow-Your-Canvas (FY
 - FYC layout / geometry / mask tokens are consumed through Wan's `encoder_hidden_states_image` path.
 - Inference uses anchor video, known-region masks, multi-round planning, tile execution, and gaussian overlap merge.
 - Training smoke performs `forward + backward + optimizer.step()`.
-- Superseded TI2V-only / dry-run-only surfaces were moved under `WanCanvas_Trash/`.
+- Superseded TI2V-only / dry-run-only surfaces were removed from the repo after the replacement path passed verification.
 
 ## Runtime modes
 - `auto`: prefer cached Wan2.2 weights, otherwise fall back to the built-in smoke runtime
@@ -42,7 +42,7 @@ WanCanvas/
 
 ## Docs
 - Architecture note: `docs/wan-fyc-architecture-note.md`
-- Trash matrix: `docs/wan-fyc-trash-matrix.md`
+- Replacement/removal matrix: `docs/wan-fyc-trash-matrix.md`
 
 ## Verification
 Current regression coverage:
